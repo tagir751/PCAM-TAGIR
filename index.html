@@ -1,1746 +1,864 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AI-система отчётов для образовательных центров | TAGIR</title>
-  <style>
-    /* Логотип — фиксированный в левом верхнем углу, прозрачный фон, адаптивный размер */
-    .logo-fixed {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      z-index: 1000;
-      width: 100px;
-      height: auto;
-      transition: transform 0.3s ease;
-    }
-    .logo-fixed:hover {
-      transform: scale(1.05);
-    }
-
-    /* Адаптация под мобильные */
-    @media (max-width: 768px) {
-      .logo-fixed {
-        width: 100px;
-        top: 16px;
-        left: 16px;
-      }
-    }
-
-    /* Основной контент — отступ сверху, чтобы не перекрывался логотипом */
-    body {
-      margin-top: 80px; /* достаточно, чтобы логотип не закрывал заголовок */
-    }
-  </style>
-</head>
-<body>
-  <!-- ЛОГОТИП — вставляется здесь, поверх всего -->
-  <img src="logo.png" alt="TAGIR Logo" class="logo-fixed">
-
-<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI-система отчётов для образовательных центров | TAGIR</title>
-    <meta name="description" content="Автоматическая генерация персонализированных отчётов для родителей. Удерживайте клиентов через понимание развития детей.">
-    <meta name="keywords" content="отчёты для родителей, образовательный центр, удержание клиентов, AI отчёты, развитие мышления">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>TAGIR — инфраструктура развития мышления</title>
     <style>
+        /* ===== СБРОС И ПЕРЕМЕННЫЕ ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        html {
-            scroll-behavior: smooth;
+        :root {
+            --gold: #ffb833;
+            --gold-deep: #b39424;
+            --cream: #fff4cc;
+            --violet: #7237ff;
+            --violet-deep: #5026b3;
+            --white: #ffffff;
+            --gray-light: #f5f5f5;
+            --gray-border: #e0e0e0;
+            --text-dark: #222222;
+            --text-soft: #444444;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            color: #2D3748;
-            background: #F8F7F4;
-            line-height: 1.6;
+            font-family: var(--font-sans);
+            background-color: var(--white);
+            color: var(--text-dark);
+            line-height: 1.5;
+            scroll-behavior: smooth;
         }
 
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-        }
-
-        /* Hero Section */
-        .hero {
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            background: linear-gradient(135deg, #1E3A5F 0%, #2D5A87 100%);
-        }
-
-        .hero-blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.3;
-            pointer-events: none;
-            animation: float 20s ease-in-out infinite;
-        }
-
-        .blob-1 {
-            width: 400px;
-            height: 400px;
-            background: #4A7C59;
-            top: 10%;
-            left: 5%;
-        }
-
-        .blob-2 {
-            width: 300px;
-            height: 300px;
-            background: #E07A5F;
-            bottom: 20%;
-            right: 10%;
-            animation-delay: 5s;
-        }
-
-        .blob-3 {
-            width: 250px;
-            height: 250px;
-            background: #5A9A6D;
-            top: 50%;
-            right: 25%;
-            animation-delay: 10s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-30px) scale(1.1); }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 10;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            text-align: center;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 50px;
-            padding: 10px 20px;
-            margin-bottom: 30px;
-        }
-
-        .hero-badge span {
-            color: rgba(255,255,255,0.9);
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .sparkle {
-            color: #E07A5F;
-            font-size: 18px;
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            color: white;
-            margin-bottom: 24px;
-            line-height: 1.2;
-        }
-
-        .hero h1 span {
-            color: #E07A5F;
-        }
-
-        .hero p {
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            color: rgba(255,255,255,0.8);
-            max-width: 600px;
-            margin: 0 auto 40px;
-            line-height: 1.6;
-        }
-
-        .hero-buttons {
-            display: flex;
-            flex-direction: column;
-            sm:flex-direction: row;
-            gap: 16px;
-            justify-content: center;
-            margin-bottom: 60px;
-        }
-
-        @media (min-width: 640px) {
-            .hero-buttons {
-                flex-direction: row;
-            }
-        }
-
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: #E07A5F;
-            color: white;
-            padding: 16px 32px;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(224, 122, 95, 0.3);
-            animation: pulse 3s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-
-        .btn-primary:hover {
-            background: #C6694F;
-            box-shadow: 0 15px 40px rgba(224, 122, 95, 0.4);
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            border: 2px solid rgba(255,255,255,0.3);
-            color: white;
-            padding: 16px 32px;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255,255,255,0.1);
-        }
-
-        .hero-features {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 32px;
-            color: rgba(255,255,255,0.6);
-            font-size: 14px;
-        }
-
-        .hero-feature {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .hero-feature::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: #4A7C59;
-            border-radius: 50%;
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 32px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 24px;
-            height: 40px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 20px;
-            display: flex;
-            justify-content: center;
-            padding-top: 8px;
-        }
-
-        .scroll-indicator::after {
-            content: '';
-            width: 6px;
-            height: 10px;
-            background: rgba(255,255,255,0.5);
-            border-radius: 3px;
-            animation: scrollBounce 2s ease-in-out infinite;
-        }
-
-        @keyframes scrollBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(8px); }
-        }
-
-        /* Section Styles */
-        section {
-            padding: 80px 20px;
-        }
-
+        /* ===== КОНТЕЙНЕР ===== */
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 0 24px;
         }
 
-        .section-header {
-            text-align: center;
-            margin-bottom: 60px;
+        /* ===== ТИПОГРАФИКА ===== */
+        h1, h2, h3 {
+            font-weight: 600;
+            line-height: 1.2;
         }
 
-        .section-header h2 {
-            font-size: clamp(2rem, 4vw, 3rem);
-            color: #2D3748;
-            margin-bottom: 16px;
+        h1 {
+            font-size: 3.5rem;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
         }
 
-        .section-header p {
-            font-size: 18px;
-            color: #718096;
-            max-width: 600px;
-            margin: 0 auto;
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            letter-spacing: -0.01em;
         }
 
-        /* Pain Points */
-        .pain-points {
-            background: #F8F7F4;
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
         }
 
-        .cards-grid {
+        .section-subhead {
+            font-size: 1.25rem;
+            color: var(--text-soft);
+            max-width: 700px;
+            margin-bottom: 3rem;
+        }
+
+        /* ===== КНОПКИ ===== */
+        .btn {
+            display: inline-block;
+            padding: 12px 32px;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .btn-primary {
+            background-color: var(--gold);
+            color: var(--text-dark);
+            border-color: var(--gold);
+        }
+
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--gold);
+            border-color: var(--gold);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--violet);
+            border-color: var(--violet);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--violet);
+            color: white;
+        }
+
+        /* ===== ХЕДЕР (ЛИПКИЙ) ===== */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid transparent;
+            transition: background-color 0.3s, box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .header.scrolled {
+            background-color: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border-bottom-color: var(--gray-border);
+        }
+
+        .header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
+
+        .logo {
+            height: 48px;
+            width: auto;
+            transition: height 0.3s;
+        }
+
+        .header.scrolled .logo {
+            height: 40px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 1rem;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--violet);
+        }
+
+        /* убрана кнопка входа */
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            .header .container {
+                justify-content: center;
+            }
+        }
+
+        /* ===== ОСНОВНЫЕ БЛОКИ ===== */
+        section {
+            padding: 80px 0;
+            border-bottom: 1px solid var(--gray-border);
+        }
+
+        .section-light {
+            background-color: var(--white);
+        }
+
+        .section-cream {
+            background-color: var(--cream);
+        }
+
+        /* ===== СЕТКИ ===== */
+        .grid-2, .grid-3, .grid-4 {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
+            gap: 40px;
         }
 
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+            }
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+        }
+
+        /* ===== КАРТОЧКИ ===== */
         .card {
-            background: white;
             padding: 32px;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
+            border: 1px solid var(--gray-border);
+            border-radius: 24px;
+            background-color: var(--white);
+            transition: box-shadow 0.2s;
         }
 
         .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
         }
 
         .card-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-size: 2.5rem;
+            line-height: 1;
             margin-bottom: 20px;
-            font-size: 24px;
+            color: var(--violet);
         }
 
-        .card h3 {
-            font-size: 20px;
-            margin-bottom: 12px;
-            color: #2D3748;
-        }
-
-        .card p {
-            color: #718096;
-            line-height: 1.6;
-        }
-
-        /* Solution Section */
-        .solution {
-            background: linear-gradient(135deg, #1E3A5F 0%, #2D5A87 100%);
-            color: white;
-        }
-
-        .solution .section-header h2,
-        .solution .section-header p {
-            color: white;
-        }
-
-        .solution .section-header p {
-            opacity: 0.7;
-        }
-
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 32px;
-            position: relative;
-        }
-
-        .step {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 24px;
-            padding: 40px 32px;
-            text-align: center;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .step:hover {
-            background: rgba(255,255,255,0.15);
-        }
-
-        .step-number {
-            position: absolute;
-            top: -16px;
-            left: 32px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 14px;
-            color: white;
-        }
-
-        .step-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 24px;
-            font-size: 36px;
-        }
-
-        .step h3 {
-            font-size: 20px;
-            margin-bottom: 12px;
-            color: white;
-        }
-
-        .step p {
-            color: rgba(255,255,255,0.7);
-            line-height: 1.6;
-        }
-
-        .solution-cta {
-            text-align: center;
-            margin-top: 48px;
-        }
-
-        /* Features */
-        .features {
-            background: #F8F7F4;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 28px;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-            transition: all 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
-        }
-
-        .feature-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .card-title {
+            font-size: 1.5rem;
             margin-bottom: 16px;
-            font-size: 22px;
         }
 
-        .feature-card h3 {
-            font-size: 18px;
-            margin-bottom: 8px;
-            color: #2D3748;
+        .card-text {
+            color: var(--text-soft);
         }
 
-        .feature-card p {
-            color: #718096;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        /* Methodology */
-        .methodology {
-            background: white;
-        }
-
-        .methodology .section-header span {
-            color: #1E3A5F;
-        }
-
-        .stages-grid {
+        /* ===== ПИСЬМА ===== */
+        .letter-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin: 40px 0;
         }
 
-        .stage-card {
-            background: #F8F7F4;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-        }
-
-        .stage-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.12);
-        }
-
-        .stage-card.green { border-top: 4px solid #4A7C59; }
-        .stage-card.blue { border-top: 4px solid #1E3A5F; }
-        .stage-card.orange { border-top: 4px solid #E07A5F; }
-
-        .stage-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 24px 24px 16px;
-        }
-
-        .stage-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-
-        .stage-age {
-            font-size: 12px;
-            font-weight: 600;
-            padding: 6px 12px;
-            border-radius: 20px;
-        }
-
-        .stage-card.green .stage-icon { background: rgba(74, 124, 89, 0.15); }
-        .stage-card.green .stage-age { background: rgba(74, 124, 89, 0.15); color: #4A7C59; }
-        
-        .stage-card.blue .stage-icon { background: rgba(30, 58, 95, 0.15); }
-        .stage-card.blue .stage-age { background: rgba(30, 58, 95, 0.15); color: #1E3A5F; }
-        
-        .stage-card.orange .stage-icon { background: rgba(224, 122, 95, 0.15); }
-        .stage-card.orange .stage-age { background: rgba(224, 122, 95, 0.15); color: #E07A5F; }
-
-        .stage-content {
-            padding: 0 24px 24px;
-        }
-
-        .stage-content h3 {
-            font-size: 18px;
-            margin-bottom: 12px;
-            color: #2D3748;
-        }
-
-        .stage-content p {
-            color: #718096;
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .stage-skills-label {
-            font-size: 11px;
-            font-weight: 600;
-            color: #718096;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
-        }
-
-        .stage-skills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .skill-tag {
-            background: white;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            color: #2D3748;
-            border: 1px solid #E2E0DA;
-        }
-
-        .methodology-footer {
-            text-align: center;
-            margin-top: 48px;
-            color: #718096;
-            font-size: 14px;
-        }
-
-        /* Examples */
-        .examples {
-            background: #F8F7F4;
-        }
-
-        .examples-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 32px;
-        }
-
-        @media (max-width: 480px) {
-            .examples-grid {
+        @media (max-width: 768px) {
+            .letter-grid {
                 grid-template-columns: 1fr;
             }
         }
 
-        .example-card {
-            background: white;
+        .letter {
+            background-color: var(--cream);
+            border: 1px solid var(--gold);
             border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 32px;
+            font-size: 1rem;
         }
 
-        .example-header {
-            padding: 16px 24px;
+        .letter-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            color: white;
-            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--violet-deep);
+            font-weight: 500;
         }
 
-        .example-header.telegram { background: #1E3A5F; }
-        .example-header.email { background: #4A7C59; }
-
-        .example-content {
-            padding: 24px;
+        .letter-name {
+            font-size: 1.3rem;
         }
 
-        .message-preview {
-            background: #F8F7F4;
-            border-radius: 16px;
-            padding: 20px;
+        .letter-date {
+            font-size: 0.9rem;
+            color: var(--gold-deep);
         }
 
-        .message-title {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .message-title span {
-            font-size: 24px;
-        }
-
-        .message-title strong {
-            color: #2D3748;
-            font-size: 16px;
-        }
-
-        .message-text {
-            color: #2D3748;
-            font-size: 14px;
-            line-height: 1.7;
-            margin-bottom: 16px;
-        }
-
-        .message-highlight {
-            background: white;
-            border-radius: 12px;
-            padding: 16px;
-            border-left: 4px solid #4A7C59;
-            margin-bottom: 16px;
-        }
-
-        .message-highlight strong {
-            color: #1E3A5F;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .message-highlight p {
-            color: #718096;
-            font-size: 14px;
+        .letter-text {
+            margin-bottom: 20px;
             line-height: 1.6;
         }
 
-        .message-highlight .conclusion {
-            color: #4A7C59;
-            font-weight: 600;
-            margin-top: 8px;
+        .letter-markers {
+            margin: 16px 0;
+            font-weight: 500;
         }
 
-        .message-action {
-            background: rgba(224, 122, 95, 0.1);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
+        .marker {
+            background-color: #f0eaff;
+            color: var(--violet);
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-right: 6px;
+            margin-bottom: 6px;
         }
 
-        .message-action-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .letter-home {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--gold-deep);
+            font-style: normal;
+        }
+
+        /* ===== ЦИФРЫ ===== */
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1;
             margin-bottom: 8px;
         }
 
-        .message-action-title span {
-            font-size: 20px;
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-soft);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        .message-action-title strong {
-            color: #2D3748;
+        /* ===== ТАРИФЫ ===== */
+        .tariff-card {
+            padding: 40px 32px;
+            border: 2px solid var(--gray-border);
+            border-radius: 32px;
+            background-color: var(--white);
         }
 
-        .message-action p {
-            color: #718096;
-            font-size: 14px;
-            line-height: 1.6;
+        .tariff-card.partner {
+            border-color: var(--violet);
+            background-color: var(--cream);
         }
 
-        .message-footer {
-            color: #718096;
-            font-size: 12px;
-            font-style: italic;
+        .tariff-name {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--violet-deep);
         }
 
-        .teacher-section {
+        .tariff-price {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-dark);
             margin-bottom: 20px;
         }
 
-        .teacher-section:last-child {
-            margin-bottom: 0;
+        .tariff-price small {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--text-soft);
         }
 
-        .teacher-section-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-
-        .teacher-section-header svg {
-            width: 20px;
-            height: 20px;
-            color: #4A7C59;
-        }
-
-        .teacher-section-header strong {
-            color: #2D3748;
-            font-size: 14px;
-        }
-
-        .teacher-section-header span {
-            font-size: 20px;
-        }
-
-        .teacher-section p {
-            color: #718096;
-            font-size: 14px;
-            line-height: 1.6;
-            padding-left: 28px;
-        }
-
-        .teacher-section .highlight {
-            color: #1E3A5F;
-            font-weight: 600;
-        }
-
-        .teacher-section ol {
-            color: #718096;
-            font-size: 14px;
-            line-height: 1.7;
-            padding-left: 44px;
-        }
-
-        .teacher-section ol li {
-            margin-bottom: 8px;
-        }
-
-        .teacher-next-step {
-            background: rgba(30, 58, 95, 0.05);
-            border-radius: 12px;
-            padding: 16px;
-            border-left: 4px solid #1E3A5F;
-        }
-
-        .teacher-next-step strong {
-            color: #1E3A5F;
-        }
-
-        /* Pricing */
-        .pricing {
-            background: white;
-        }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-        }
-
-        .pricing-card {
-            background: #F8F7F4;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .pricing-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.12);
-        }
-
-        .pricing-card.recommended {
-            border: 2px solid #E07A5F;
-        }
-
-        .pricing-badge {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: #E07A5F;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .pricing-content {
-            padding: 32px;
-        }
-
-        .pricing-card.recommended .pricing-content {
-            padding-top: 56px;
-        }
-
-        .pricing-header {
-            margin-bottom: 24px;
-        }
-
-        .pricing-header h3 {
-            font-size: 20px;
-            margin-bottom: 8px;
-            color: #2D3748;
-        }
-
-        .pricing-header p {
-            color: #718096;
-            font-size: 14px;
-        }
-
-        .pricing-price {
-            margin-bottom: 24px;
-        }
-
-        .pricing-price .amount {
-            font-size: 42px;
-            font-weight: 700;
-        }
-
-        .pricing-price .period {
-            color: #718096;
-            font-size: 16px;
-        }
-
-        .pricing-features {
+        .tariff-features {
             list-style: none;
             margin-bottom: 32px;
         }
 
-        .pricing-features li {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
+        .tariff-features li {
             margin-bottom: 12px;
-            color: #2D3748;
-            font-size: 14px;
+            padding-left: 28px;
+            position: relative;
         }
 
-        .pricing-features li::before {
-            content: '✓';
-            width: 20px;
-            height: 20px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-        }
-
-        .pricing-card:nth-child(1) .pricing-features li::before { color: #718096; }
-        .pricing-card:nth-child(2) .pricing-features li::before { color: #E07A5F; }
-        .pricing-card:nth-child(3) .pricing-features li::before { color: #1E3A5F; }
-
-        .pricing-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            padding: 16px;
-            border-radius: 12px;
-            font-size: 16px;
+        .tariff-features li::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: var(--gold);
             font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
         }
 
-        .pricing-card:nth-child(1) .pricing-btn {
-            background: white;
-            border: 2px solid #E2E0DA;
-            color: #2D3748;
-        }
-
-        .pricing-card:nth-child(1) .pricing-btn:hover {
-            border-color: #718096;
-            background: #F8F7F4;
-        }
-
-        .pricing-card:nth-child(2) .pricing-btn {
-            background: #E07A5F;
-            color: white;
-            box-shadow: 0 10px 30px rgba(224, 122, 95, 0.3);
-        }
-
-        .pricing-card:nth-child(2) .pricing-btn:hover {
-            background: #C6694F;
-            box-shadow: 0 15px 40px rgba(224, 122, 95, 0.4);
-        }
-
-        .pricing-card:nth-child(3) .pricing-btn {
-            background: white;
-            border: 2px solid #E2E0DA;
-            color: #2D3748;
-        }
-
-        .pricing-card:nth-child(3) .pricing-btn:hover {
-            border-color: #1E3A5F;
-            background: #F8F7F4;
-        }
-
-        .pricing-promo {
-            text-align: center;
-            margin-top: 48px;
-        }
-
-        .pricing-promo-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(74, 124, 89, 0.1);
-            color: #4A7C59;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: 500;
-        }
-
-        .pricing-promo-badge span {
-            font-size: 20px;
-        }
-
-        /* CTA Final */
-        .cta-final {
-            background: linear-gradient(135deg, #1E3A5F 0%, #2D5A87 100%);
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-final .blob-1 {
-            top: -10%;
-            right: 5%;
-            left: auto;
-        }
-
-        .cta-final .blob-2 {
-            bottom: 10%;
-            left: 10%;
-        }
-
-        .cta-content {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .cta-content h2 {
-            font-size: clamp(2rem, 4vw, 3rem);
-            margin-bottom: 24px;
-            color: white;
-        }
-
-        .cta-content h2 span {
-            color: #E07A5F;
-        }
-
-        .cta-content p {
-            font-size: 18px;
-            color: rgba(255,255,255,0.8);
-            margin-bottom: 40px;
-        }
-
-        .cta-contacts {
-            margin-top: 64px;
-            padding-top: 40px;
-            border-top: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .cta-contacts > p {
-            color: rgba(255,255,255,0.6);
-            font-size: 14px;
-            margin-bottom: 24px;
-        }
-
-        .contacts-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 24px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .contact-item:hover {
-            color: white;
-        }
-
-        .contact-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        /* Footer */
-        footer {
-            background: #1A202C;
-            color: rgba(255,255,255,0.8);
-            padding: 64px 20px 32px;
-        }
-
-        .footer-grid {
+        /* ===== КОМПЕТЕНЦИИ ===== */
+        .competence-grid {
             display: grid;
-            grid-template-columns: 2fr repeat(3, 1fr);
-            gap: 48px;
-            max-width: 1200px;
-            margin: 0 auto 48px;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
         }
 
-        @media (max-width: 768px) {
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-            }
+        .competence-item {
+            padding: 20px;
+            border-left: 4px solid var(--gold);
+            background-color: var(--cream);
+            border-radius: 0 16px 16px 0;
         }
 
-        @media (max-width: 480px) {
-            .footer-grid {
-                grid-template-columns: 1fr;
-            }
+        .competence-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--violet-deep);
         }
 
-        .footer-brand {
-            max-width: 300px;
+        .competence-desc {
+            color: var(--text-soft);
+            font-size: 0.95rem;
         }
 
-        .footer-logo {
+        /* ===== АВТОР ===== */
+        .author-block {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 40px;
+        }
+
+        .author-photo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--gold);
+        }
+
+        .author-bio {
+            flex: 1;
+        }
+
+        .author-name {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .author-desc {
+            font-size: 1.1rem;
+            color: var(--text-soft);
             margin-bottom: 16px;
         }
 
-        .footer-logo-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #1E3A5F 0%, #4A7C59 100%);
-            border-radius: 10px;
+        @media (max-width: 768px) {
+            .author-block {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* ===== ФУТЕР ===== */
+        .footer {
+            padding: 40px 0;
+            background-color: var(--cream);
+            border-top: 1px solid var(--gray-border);
+        }
+
+        .footer .container {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-
-        .footer-logo span {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 20px;
-            font-weight: 700;
-            color: white;
-        }
-
-        .footer-brand p {
-            color: rgba(255,255,255,0.6);
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .footer-socials {
-            display: flex;
-            gap: 10px;
-        }
-
-        .footer-socials a {
-            width: 36px;
-            height: 36px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            font-size: 16px;
-            transition: background 0.3s ease;
-        }
-
-        .footer-socials a:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-        .footer-column h4 {
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: white;
-            margin-bottom: 20px;
-        }
-
-        .footer-column ul {
-            list-style: none;
-        }
-
-        .footer-column li {
-            margin-bottom: 12px;
-        }
-
-        .footer-column a {
-            color: rgba(255,255,255,0.6);
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s ease;
-        }
-
-        .footer-column a:hover {
-            color: white;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 24px;
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            gap: 16px;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
-        .footer-bottom p {
-            color: rgba(255,255,255,0.4);
-            font-size: 14px;
+        .footer-links a {
+            text-decoration: none;
+            color: var(--text-soft);
+            margin-right: 30px;
+            transition: color 0.2s;
         }
 
-        /* Animations */
-        .fade-in {
+        .footer-links a:hover {
+            color: var(--violet);
+        }
+
+        .footer-social a {
+            color: var(--violet-deep);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .hr-line {
+            width: 80px;
+            height: 2px;
+            background-color: var(--gold);
+            margin: 20px 0 30px;
+        }
+
+        .fade-up {
             opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.6s ease;
+            transform: translateY(20px);
+            animation: fadeUp 0.6s forwards;
         }
 
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* дополнительные стили для текста */
+        .lead-text {
+            font-size: 1.2rem;
+            color: var(--text-soft);
+            margin-bottom: 2rem;
         }
     </style>
 </head>
 <body>
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-blob blob-1"></div>
-        <div class="hero-blob blob-2"></div>
-        <div class="hero-blob blob-3"></div>
-        
-        <div class="hero-content">
-            <div class="hero-badge">
-                <span class="sparkle">✨</span>
-                <span>Новое поколение коммуникации с родителями</span>
-            </div>
-            
-            <h1>
-                AI-система отчётов,<br>
-                <span>которая удерживает клиентов</span>
-            </h1>
-            
-            <p>
-                Автоматическая генерация персонализированных отчётов для родителей. 
-                Педагог голосом — родитель получает инсайт.
-            </p>
-            
-            <div class="hero-buttons">
-                <a href="https://t.me/TagirFeo" class="btn-primary" target="_blank">
-                    Записаться на пилот
-                    <span>→</span>
-                </a>
-                <a href="#examples" class="btn-secondary">
-                    Увидеть пример отчёта
-                </a>
-            </div>
-            
-            <div class="hero-features">
-                <div class="hero-feature">Голосовой ввод</div>
-                <div class="hero-feature">2 минуты на отчёт</div>
-                <div class="hero-feature">Научная методика</div>
-            </div>
-        </div>
-        
-        <div class="scroll-indicator"></div>
-    </section>
-
-    <!-- Pain Points Section -->
-    <section class="pain-points">
+    <!-- ХЕДЕР (без входа) -->
+    <header class="header" id="header">
         <div class="container">
-            <div class="section-header fade-in">
-                <h2>Знакомая ситуация?</h2>
-                <p>Владельцы образовательных центров сталкиваются с этими проблемами каждый день</p>
-            </div>
-            
-            <div class="cards-grid">
-                <div class="card fade-in">
-                    <div class="card-icon" style="background: rgba(224, 122, 95, 0.15);">👥</div>
-                    <h3>Отток клиентов</h3>
-                    <p>Дети бросают кружок через 2-3 месяца, и вы не понимаете почему</p>
-                </div>
-                
-                <div class="card fade-in">
-                    <div class="card-icon" style="background: rgba(30, 58, 95, 0.15);">💬</div>
-                    <h3>Жалобы родителей</h3>
-                    <p>Что мой ребёнок делает на занятиях? Почему нет результата?</p>
-                </div>
-                
-                <div class="card fade-in">
-                    <div class="card-icon" style="background: rgba(74, 124, 89, 0.15);">⏰</div>
-                    <h3>Педагоги перегружены</h3>
-                    <p>Отчёты отнимают часы. Педагоги сопротивляются «лишней» работе</p>
-                </div>
-            </div>
+            <img src="logo.png" alt="TAGIR" class="logo" id="logo">
+            <nav class="nav-menu">
+                <a href="#directors" class="nav-link">Руководителям</a>
+                <a href="#teachers" class="nav-link">Педагогам</a>
+                <a href="#parents" class="nav-link">Родителям</a>
+            </nav>
         </div>
-    </section>
+    </header>
 
-    <!-- Solution Section -->
-    <section class="solution">
-        <div class="container">
-            <div class="section-header fade-in">
-                <h2>Как это работает</h2>
-                <p>Три простых шага от голоса педагога к инсайту родителя</p>
-            </div>
-            
-            <div class="steps">
-                <div class="step fade-in">
-                    <div class="step-number" style="background: #4A7C59;">01</div>
-                    <div class="step-icon" style="background: rgba(74, 124, 89, 0.3);">🎤</div>
-                    <h3>Педагог диктует</h3>
-                    <p>2 минуты голосом в Telegram — никаких форм и таблиц</p>
+    <main>
+        <!-- ПЕРВЫЙ ЭКРАН (ГЕРО) -->
+        <section class="section-light" style="padding-top: 40px;">
+            <div class="container">
+                <div style="max-width: 800px;">
+                    <h1 class="fade-up">Увеличьте LTV центра на 40%<br>без новых вложений.</h1>
+                    <p class="section-subhead fade-up" style="animation-delay: 0.1s;">TAGIR — инфраструктура наблюдения и развития мышления. Встраивается в любые занятия и превращает живые наблюдения педагогов в прозрачные отчёты для родителей, рост лояльности и новые продукты для вашего центра.</p>
+                    <div class="fade-up" style="animation-delay: 0.2s;">
+                        <a href="#contact" class="btn btn-primary" style="margin-right: 16px;">Хочу пилот</a>
+                        <a href="#directors" class="btn btn-outline">Узнать больше</a>
+                    </div>
                 </div>
-                
-                <div class="step fade-in">
-                    <div class="step-number" style="background: #1E3A5F;">02</div>
-                    <div class="step-icon" style="background: rgba(30, 58, 95, 0.3);">🧠</div>
-                    <h3>AI анализирует</h3>
-                    <p>Через методику развития мышления TAGIR</p>
-                </div>
-                
-                <div class="step fade-in">
-                    <div class="step-number" style="background: #E07A5F;">03</div>
-                    <div class="step-icon" style="background: rgba(224, 122, 95, 0.3);">📨</div>
-                    <h3>Родитель получает</h3>
-                    <p>Красивый отчёт с пониманием развития ребёнка</p>
-                </div>
+                <div style="margin-top: 40px; height: 2px; background: linear-gradient(90deg, var(--gold), var(--violet), var(--gold-deep)); width: 100%;"></div>
             </div>
-            
-            <div class="solution-cta fade-in">
-                <a href="#examples" class="btn-primary">
-                    Увидеть пример отчёта
-                    <span>→</span>
-                </a>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Features Section -->
-    <section class="features">
-        <div class="container">
-            <div class="section-header fade-in">
-                <h2>Что вы получаете</h2>
-                <p>Полный набор инструментов для удержания клиентов и развития педагогов</p>
-            </div>
-            
-            <div class="features-grid">
-                <div class="feature-card fade-in">
-                    <div class="feature-icon" style="background: rgba(74, 124, 89, 0.15);">🎤</div>
-                    <h3>Голосовой ввод</h3>
-                    <p>Педагог просто диктует, не пишет. Экономия времени — с 30 минут до 2 минут.</p>
+        <!-- БЛОК ДЛЯ РУКОВОДИТЕЛЕЙ -->
+        <section id="directors" class="section-light">
+            <div class="container">
+                <h2>Для руководителей: <br>бизнес, в котором дети не уходят</h2>
+                <div class="hr-line"></div>
+                <div class="grid-3" style="margin-bottom: 60px;">
+                    <div class="card">
+                        <div class="card-icon">📉</div>
+                        <h3 class="card-title">Родители уходят, потому что не видят ценности</h3>
+                        <p class="card-text">TAGIR даёт прозрачность: родители получают тёплые, содержательные письма каждую неделю. Они видят динамику мышления ребёнка и не хотят прерывать этот поток.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔄</div>
+                        <h3 class="card-title">Педагоги работают по‑разному, качество плавает</h3>
+                        <p class="card-text">Единый стандарт наблюдения. Все фиксируют развитие в одной логике. Вы видите, кто действительно включается, а кто формален.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🧩</div>
+                        <h3 class="card-title">Вы не знаете, какие новые продукты запускать</h3>
+                        <p class="card-text">На основе паттернов развития система подсказывает, какие микропродукты будут востребованы именно вашими семьями. Конверсия в доппродажи растёт.</p>
+                    </div>
                 </div>
-                
-                <div class="feature-card fade-in">
-                    <div class="feature-icon" style="background: rgba(30, 58, 95, 0.15);">📚</div>
-                    <h3>Методика TAGIR</h3>
-                    <p>Отчёты основаны на научной системе развития мышления детей от 7 до 18 лет.</p>
-                </div>
-                
-                <div class="feature-card fade-in">
-                    <div class="feature-icon" style="background: rgba(224, 122, 95, 0.15);">📄</div>
-                    <h3>Два формата</h3>
-                    <p>Telegram для родителя + письмо педагогу с подтверждением компетенции.</p>
-                </div>
-                
-                <div class="feature-card fade-in">
-                    <div class="feature-icon" style="background: rgba(74, 124, 89, 0.15);">🏠</div>
-                    <h3>Домашние шаги</h3>
-                    <p>Конкретное действие для родителя после каждого занятия — вовлечение без принуждения.</p>
-                </div>
-                
-                <div class="feature-card fade-in">
-                    <div class="feature-icon" style="background: rgba(30, 58, 95, 0.15);">📈</div>
-                    <h3>История развития</h3>
-                    <p>Накопление данных о прогрессе ребёнка — виден рост навыков во времени.</p>
-                </div>
-                
-                <div class="feature-card fade-in">
-                    <div class="feature-icon" style="background: rgba(224, 122, 95, 0.15);">🏷️</div>
-                    <h3>Ваш бренд</h3>
-                    <p>Отчёты с логотипом вашего центра — родители видят вашу заботу и экспертность.</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Methodology Section -->
-    <section class="methodology" id="methodology">
-        <div class="container">
-            <div class="section-header fade-in">
-                <h2>Методика развития мышления <span>TAGIR</span></h2>
-                <p>12 навыков в 3 категориях. От простых поделок до стартапов — каждый этап готовит к следующему.</p>
-            </div>
-            
-            <div class="stages-grid">
-                <div class="stage-card green fade-in">
-                    <div class="stage-header">
-                        <div class="stage-icon">💡</div>
-                        <span class="stage-age">7-9 лет</span>
+                <!-- Цифры -->
+                <div class="grid-3" style="margin-bottom: 60px;">
+                    <div>
+                        <div class="stat-number">+40%</div>
+                        <div class="stat-label">LTV</div>
                     </div>
-                    <div class="stage-content">
-                        <h3>Мастерская создателей</h3>
-                        <p>Работа руками, простые проекты с быстрым результатом. Первый опыт успеха и вера «я могу создавать».</p>
-                        <div class="stage-skills-label">Развиваемые навыки</div>
-                        <div class="stage-skills">
-                            <span class="skill-tag">Формулирование мыслей</span>
-                            <span class="skill-tag">Определение задач</span>
-                            <span class="skill-tag">Базовая командная работа</span>
-                        </div>
+                    <div>
+                        <div class="stat-number">↓2x</div>
+                        <div class="stat-label">снижение оттока</div>
+                    </div>
+                    <div>
+                        <div class="stat-number">+30%</div>
+                        <div class="stat-label">ARPU (микропродукты)</div>
                     </div>
                 </div>
-                
-                <div class="stage-card blue fade-in">
-                    <div class="stage-header">
-                        <div class="stage-icon">🎯</div>
-                        <span class="stage-age">10-14 лет</span>
-                    </div>
-                    <div class="stage-content">
-                        <h3>Лаборатория решений</h3>
-                        <p>Интеллектуальные проекты, системное мышление, профориентация. От школьных проектов до предпринимательства.</p>
-                        <div class="stage-skills-label">Развиваемые навыки</div>
-                        <div class="stage-skills">
-                            <span class="skill-tag">Системное мышление</span>
-                            <span class="skill-tag">Управление проектом</span>
-                            <span class="skill-tag">Финансовая грамотность</span>
-                            <span class="skill-tag">Коммуникация</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="stage-card orange fade-in">
-                    <div class="stage-header">
-                        <div class="stage-icon">🚀</div>
-                        <span class="stage-age">15-18 лет</span>
-                    </div>
-                    <div class="stage-content">
-                        <h3>Инкубатор стартапов</h3>
-                        <p>Реальные стартап-проекты, лидерство, стратегическое планирование. Подготовка к взрослой жизни.</p>
-                        <div class="stage-skills-label">Развиваемые навыки</div>
-                        <div class="stage-skills">
-                            <span class="skill-tag">Лидерство</span>
-                            <span class="skill-tag">Product Management</span>
-                            <span class="skill-tag">Business Development</span>
-                            <span class="skill-tag">Self-awareness</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="methodology-footer fade-in">
-                <p>Основано на фундаментальных принципах: Образование vs Воспитание, Потребитель → Создатель, Сложное мышление через сложные вопросы</p>
-            </div>
-        </div>
-    </section>
 
-    <!-- Examples Section -->
-    <section class="examples" id="examples">
-        <div class="container">
-            <div class="section-header fade-in">
-                <h2>Как выглядят отчёты</h2>
-                <p>Два формата — для родителя и педагога. Один эпизод, две перспективы.</p>
-            </div>
-            
-            <div class="examples-grid">
-                <!-- Parent Report -->
-                <div class="example-card fade-in">
-                    <div class="example-header telegram">
-                        <span>💬</span>
-                        <span>Telegram для родителя</span>
-                    </div>
-                    <div class="example-content">
-                        <div class="message-preview">
-                            <div class="message-title">
-                                <span>🎯</span>
-                                <strong>Даниил открыл для себя настоящую физику</strong>
-                            </div>
-                            
-                            <div class="message-text">
-                                <p>На занятии Даниил решил создать игру про футбол. Мяч должен летать от игрока к воротам, которые стоят вдалеке.</p>
-                                <p style="margin-top: 8px;">Первый вопрос: как сделать, чтобы мяч летел как настоящий?</p>
-                            </div>
-                            
-                            <div class="message-highlight">
-                                <strong>Интересное:</strong>
-                                <p>Даниил не просто спросил ИИ «как сделать полёт?». Сначала он определил, чего ему не хватает — вес мяча, силу удара, формулу. Потом попросил ИИ эти данные и внимательно разбирался, как это работает.</p>
-                                <p class="conclusion">Это не «получил ответ» — это «понял логику».</p>
-                            </div>
-                            
-                            <div class="message-action">
-                                <div class="message-action-title">
-                                    <span>🏠</span>
-                                    <strong>Один шаг дома:</strong>
-                                </div>
-                                <p>Попросите Даниила за 5–7 минут объяснить вам, какие 2–3 фактора влияют на дальность полёта мяча. Если захочет — пусть придумает, как это проверить в Scratch.</p>
-                            </div>
-                            
-                            <p class="message-footer">Если захотите, напишите: как часто Даниил занимается программированием дома? Это помогает нам лучше подбирать задачи.</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Teacher Report -->
-                <div class="example-card fade-in">
-                    <div class="example-header email">
-                        <span>✉️</span>
-                        <span>Письмо педагогу</span>
-                    </div>
-                    <div class="example-content">
-                        <div class="message-preview">
-                            <div class="teacher-section">
-                                <div class="teacher-section-header">
-                                    <span>✅</span>
-                                    <strong>ВЫ ЗАМЕТИЛИ:</strong>
-                                </div>
-                                <p>Вы видели, что Даниил не просто реализует идею — он останавливается и спрашивает: «Что мне не хватает, чтобы это работало?»</p>
-                                <p style="color: #4A7C59; font-weight: 600; margin-top: 8px; padding-left: 28px;">Это самый редкий навык. Даниил не ищет «готовый ответ» — ищет данные для собственной модели.</p>
-                            </div>
-                            
-                            <div class="teacher-section" style="border-top: 1px solid #E2E0DA; padding-top: 16px; margin-top: 16px;">
-                                <div class="teacher-section-header">
-                                    <span>🎯</span>
-                                    <strong>ЭТО СИСТЕМНОЕ МЫШЛЕНИЕ:</strong>
-                                </div>
-                                <p>Даниил прошёл путь: <span class="highlight">Идея → Вопрос → Недостающие данные → Проверка логики</span></p>
-                                <p style="margin-top: 8px;">Вы создали такое условие: «Вот идея, как её реализовать?» — и Даниил сам пришёл к выводу: «Мне нужны факты и проверка».</p>
-                            </div>
-                            
-                            <div class="teacher-section" style="border-top: 1px solid #E2E0DA; padding-top: 16px; margin-top: 16px;">
-                                <div class="teacher-section-header">
-                                    <span>👁</span>
-                                    <strong>СМОТРЕТЬ ДАЛЬШЕ:</strong>
-                                </div>
-                                <ol>
-                                    <li>Что Даниил делал, когда столкнулся с непониманием? (задавал вопросы / молчал / просил помощь?)</li>
-                                    <li>Он хотел «реальную физику» или готов был к упрощённой модели?</li>
-                                    <li>Может ли он сам сказать, что именно в формуле непонятно?</li>
-                                </ol>
-                            </div>
-                            
-                            <div class="teacher-next-step" style="margin-top: 16px;">
-                                <div class="teacher-section-header">
-                                    <span>📋</span>
-                                    <strong>СЛЕДУЮЩИЙ ШАГ:</strong>
-                                </div>
-                                <p>На следующем занятии: перевести «формулу/идею» в код. Может быть, не идеальную физику, а «табличную зависимость» — главное, чтобы работало.</p>
-                                <p style="font-size: 12px; font-style: italic; margin-top: 8px;">Смотреть: как реагирует на необходимость упростить? Просит ли уточнения?</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section class="pricing" id="pricing">
-        <div class="container">
-            <div class="section-header fade-in">
-                <h2>Тарифы</h2>
-                <p>Выберите подходящий план. Все тарифы включают голосовой ввод и методику TAGIR.</p>
-            </div>
-            
-            <div class="pricing-grid">
-                <div class="pricing-card fade-in">
-                    <div class="pricing-content">
-                        <div class="pricing-header">
-                            <h3>Старт</h3>
-                            <p>Для небольших центров</p>
-                        </div>
-                        <div class="pricing-price">
-                            <span class="amount" style="color: #718096;">15 000</span>
-                            <span class="period">₽/месяц</span>
-                        </div>
-                        <ul class="pricing-features">
-                            <li>До 50 учеников</li>
-                            <li>Базовые отчёты</li>
-                            <li>Email поддержка</li>
-                            <li>Стандартные шаблоны</li>
+                <!-- Тарифы -->
+                <div class="grid-2" style="margin-top: 40px;">
+                    <div class="tariff-card">
+                        <div class="tariff-name">Базовый</div>
+                        <div class="tariff-price">от 3 000 ₽ <small>/мес</small></div>
+                        <ul class="tariff-features">
+                            <li>Приложение для педагогов (голосовые заметки)</li>
+                            <li>Автоматические отчёты родителям</li>
+                            <li>Дашборд руководителя</li>
+                            <li>Поддержка внедрения</li>
                         </ul>
-                        <a href="https://t.me/TagirFeo" class="pricing-btn" target="_blank">
-                            Начать
-                            <span>→</span>
-                        </a>
+                        <a href="#contact" class="btn btn-outline" style="width: 100%; text-align: center;">Выбрать</a>
                     </div>
-                </div>
-                
-                <div class="pricing-card recommended fade-in">
-                    <div class="pricing-badge">Рекомендуем</div>
-                    <div class="pricing-content">
-                        <div class="pricing-header">
-                            <h3>Рост</h3>
-                            <p>Для растущих центров</p>
-                        </div>
-                        <div class="pricing-price">
-                            <span class="amount" style="color: #E07A5F;">35 000</span>
-                            <span class="period">₽/месяц</span>
-                        </div>
-                        <ul class="pricing-features">
-                            <li>До 150 учеников</li>
-                            <li>Расширенная аналитика</li>
-                            <li>Приоритетная поддержка</li>
-                            <li>Настройка под бренд</li>
-                            <li>История развития</li>
-                            <li>API интеграция</li>
+                    <div class="tariff-card partner">
+                        <div class="tariff-name">Партнёрский</div>
+                        <div class="tariff-price">индивидуально</div>
+                        <ul class="tariff-features">
+                            <li>Всё из базового</li>
+                            <li>Анализ продуктовой линейки</li>
+                            <li>Настройка рекомендательного слоя</li>
+                            <li>% с проданных микропродуктов</li>
                         </ul>
-                        <a href="https://t.me/TagirFeo" class="pricing-btn" target="_blank">
-                            Выбрать Рост
-                            <span>→</span>
-                        </a>
+                        <a href="#contact" class="btn btn-primary" style="width: 100%; text-align: center;">Обсудить</a>
                     </div>
                 </div>
-                
-                <div class="pricing-card fade-in">
-                    <div class="pricing-content">
-                        <div class="pricing-header">
-                            <h3>Масштаб</h3>
-                            <p>Для сетевых центров</p>
+            </div>
+        </section>
+
+        <!-- КАК ЭТО УСТРОЕНО (4 шага) -->
+        <section class="section-cream">
+            <div class="container">
+                <h2>Как это устроено</h2>
+                <div class="hr-line"></div>
+                <div class="grid-2" style="gap: 20px;">
+                    <div class="card" style="border: none; background: transparent; padding-left: 0;">
+                        <span style="font-size: 3rem; color: var(--gold); font-weight: 600;">01</span>
+                        <h3>Наблюдение</h3>
+                        <p>Педагог наговаривает голосовое (1–2 минуты) после занятия.</p>
+                    </div>
+                    <div class="card" style="border: none; background: transparent; padding-left: 0;">
+                        <span style="font-size: 3rem; color: var(--gold); font-weight: 600;">02</span>
+                        <h3>Анализ</h3>
+                        <p>ИИ выделяет маркеры мышления и при необходимости уточняет у педагога.</p>
+                    </div>
+                    <div class="card" style="border: none; background: transparent; padding-left: 0;">
+                        <span style="font-size: 3rem; color: var(--gold); font-weight: 600;">03</span>
+                        <h3>Траектория</h3>
+                        <p>Каждое наблюдение связывается с предыдущими, строится граф развития.</p>
+                    </div>
+                    <div class="card" style="border: none; background: transparent; padding-left: 0;">
+                        <span style="font-size: 3rem; color: var(--gold); font-weight: 600;">04</span>
+                        <h3>Смысл</h3>
+                        <p>Три проекции: родителю (письмо), педагогу (профрефлексия), руководителю (дашборд).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ПИСЬМА (развёрнутые, содержательные) -->
+        <section class="section-light" id="parents">
+            <div class="container">
+                <h2>Родители перестают гадать и начинают чувствовать</h2>
+                <p class="section-subhead">Каждое письмо — это не отписка, а результат глубокого наблюдения. Вот как выглядят настоящие истории роста.</p>
+                <div class="letter-grid">
+                    <div class="letter">
+                        <div class="letter-header">
+                            <span class="letter-name">Богдан, 7 лет</span>
+                            <span class="letter-date">16 февраля 2026</span>
                         </div>
-                        <div class="pricing-price">
-                            <span class="amount" style="color: #1E3A5F; font-size: 28px;">Индивидуально</span>
+                        <div class="letter-text">
+                            <p>Сегодня Богдан четыре часа выпиливал детали для пистолета. Выпилил одну заготовку, примерил — понял: «не сойдётся». Спокойно отложил её и без малейшей паузы взялся за новую. Ни раздражения, ни крика — просто переключился и продолжил.</p>
+                            <p>🧠 Для нас это важный сигнал: его мышление учится гибкости. Он уже не упирается в стену, а ищет обходные пути. Это рост <strong>Критичности</strong> (сам заметил ошибку) и <strong>Самостоятельности</strong> (не стал ждать подсказки). В нашей модели развития он уверенно переходит от простого повторения к адаптации — способности менять подход под задачу.</p>
+                            <p>💡 Дома поддержите этот навык: когда соберёт что-то из конструктора, спросите «Что в этот раз получилось хитрее, чем в прошлый?» — без оценки, просто дайте ему проговорить свой замысел.</p>
                         </div>
-                        <ul class="pricing-features">
-                            <li>Безлимит учеников</li>
-                            <li>Полная кастомизация</li>
-                            <li>Выделенный менеджер</li>
-                            <li>Интеграция с CRM</li>
-                            <li>SLA гарантии</li>
-                            <li>Обучение педагогов</li>
+                        <div class="letter-markers">
+                            <span class="marker">Критичность</span>
+                            <span class="marker">Самостоятельность</span>
+                            <span class="marker">Гибкость</span>
+                        </div>
+                        <div class="letter-home">
+                            💬 А что Богдан рассказывает про занятия — про ребят или наставника? Нам это помогает лучше понимать его мир.
+                        </div>
+                    </div>
+                    <div class="letter">
+                        <div class="letter-header">
+                            <span class="letter-name">Миша, 8 лет</span>
+                            <span class="letter-date">15 февраля 2026</span>
+                        </div>
+                        <div class="letter-text">
+                            <p>👋 Здравствуйте! Сегодня Миша пришёл на занятие совсем по-другому — уверенно взял своего робота и сразу предложил: «Давайте сделаем ему руки!»</p>
+                            <p>🔧 Вместе с педагогом он освоил болтовое соединение, чтобы руки были подвижными. Сам клеил, пилил, сверлил — спокойно и сосредоточенно. Когда конструкция развалилась, не расстроился, а переделал так, как сам задумал, мягко отклонив подсказки взрослого. Это проявило его растущее <strong>Творчество</strong> (он уже не просто повторяет, а воплощает собственный замысел) и <strong>Вовлечённость</strong> (удерживал фокус больше часа).</p>
+                            <p>✨ Особенно тронуло, как он в конце занятия сам предложил помочь убрать чужие рабочие места — без напоминаний. А когда увидел маму, тихо спросил: «А папе тоже покажем?» Это рост <strong>Коммуникации</strong> и внутренней ответственности.</p>
+                            <p>💡 За три занятия Миша прошёл путь от тихого наблюдателя до автора — с огнём в глазах и чётким замыслом. Это не про «умение», а про растущее доверие к себе.</p>
+                        </div>
+                        <div class="letter-markers">
+                            <span class="marker">Творчество</span>
+                            <span class="marker">Вовлечённость</span>
+                            <span class="marker">Коммуникация</span>
+                        </div>
+                        <div class="letter-home">
+                            🤗 Если дома Миша что-то рассказывает про робота или ребят — поделитесь, пожалуйста. Это поможет нам лучше понимать его мир.
+                        </div>
+                    </div>
+                </div>
+                <p style="margin-top: 30px; color: var(--violet-deep); font-weight: 500; font-size: 1.1rem;">В каждом письме автоматически выделены компетенции и даны мягкие рекомендации. Родитель чувствует искреннюю заботу и понимает, как именно растёт его ребёнок.</p>
+            </div>
+        </section>
+
+        <!-- ДЛЯ РОДИТЕЛЕЙ: ПОДРОБНО О ПРОЗРАЧНОСТИ И 7 КОМПЕТЕНЦИЯХ -->
+        <section class="section-cream">
+            <div class="container">
+                <h2>Прозрачность без оценок: что это значит для вас</h2>
+                <div class="hr-line"></div>
+                <p class="lead-text">Обычно центры говорят: «У нас творческая атмосфера», «Ребёнок развивается». Но что стоит за этими словами? TAGIR заменяет пустые обещания конкретными наблюдениями. Вы видите не оценки, а живые изменения в мышлении вашего ребёнка.</p>
+                <div class="grid-2" style="margin-bottom: 40px;">
+                    <div>
+                        <h3>Что вы получаете каждую неделю</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 16px; padding-left: 28px; position: relative;">✓ <strong>Тёплое письмо в Telegram</strong> — история одного занятия, написанная живым языком. Вы узнаёте, что именно делал ребёнок, какие качества проявил, и получаете короткий совет для дома.</li>
+                            <li style="margin-bottom: 16px; padding-left: 28px; position: relative;">✓ <strong>График динамики</strong> — как меняются семь ключевых компетенций месяц за месяцем. Никаких оценок, только кривая роста.</li>
+                            <li style="margin-bottom: 16px; padding-left: 28px; position: relative;">✓ <strong>Идеи на 5 минут</strong> — простые способы закрепить прогресс в повседневной жизни (например, во время прогулки или игры).</li>
+                            <li style="margin-bottom: 16px; padding-left: 28px; position: relative;">✓ <strong>Приглашения на микропродукты</strong> — если система замечает, что ребёнку полезно углубиться в тему, вы получите предложение, которое действительно соответствует его траектории.</li>
                         </ul>
-                        <a href="https://t.me/TagirFeo" class="pricing-btn" target="_blank">
-                            Обсудить
-                            <span>→</span>
-                        </a>
+                    </div>
+                    <div>
+                        <h3>Почему это меняет всё</h3>
+                        <p>Перестаёт быть загадкой, за что вы платите. Вы начинаете видеть, как ребёнок учится справляться с трудностями, как рождаются его идеи, как он взаимодействует с другими. Это сближает вас с педагогом и центром — вы становитесь командой, которая растит мышление.</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 40px;">Семь компетенций, по которым мы наблюдаем</h3>
+                <p>Мы не пользуемся сложными психологическими терминами. Каждая компетенция — это понятное качество, которое проявляется в действиях.</p>
+                <div class="competence-grid">
+                    <div class="competence-item">
+                        <div class="competence-title">Системность</div>
+                        <div class="competence-desc">Видит связи между вещами, понимает причины и следствия. Например, замечает: «Если я положу эту деталь сюда, конструкция станет устойчивее».</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-title">Критичность</div>
+                        <div class="competence-desc">Не верит на слово, проверяет, сомневается. Может сказать: «А почему мы делаем именно так? А что, если попробовать иначе?»</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-title">Творчество</div>
+                        <div class="competence-desc">Генерирует свои идеи, предлагает неочевидные решения. Придумывает, как улучшить робота или построить необычный мост.</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-title">Управление ИИ</div>
+                        <div class="competence-desc">Использует искусственный интеллект как инструмент: умеет задать вопрос, попросить помочь с кодом или рисунком.</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-title">Коммуникация</div>
+                        <div class="competence-desc">Объясняет свою мысль, договаривается, работает в паре. Умеет слушать и слышать других.</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-title">Самостоятельность</div>
+                        <div class="competence-desc">Не ждёт указаний, сам берётся за дело. Пробует, даже если нет готового образца.</div>
+                    </div>
+                    <div class="competence-item">
+                        <div class="competence-title">Вовлечённость</div>
+                        <div class="competence-desc">Способен долго удерживать фокус, не отвлекаться. Увлечён процессом, а не только результатом.</div>
+                    </div>
+                </div>
+                <p style="margin-top: 30px;">Мы фиксируем не просто наличие этих качеств, а их динамику. Именно это позволяет видеть, как ребёнок из потребителя знаний превращается в создателя.</p>
+                <div style="margin-top: 40px;">
+                    <a href="#contact" class="btn btn-primary">Хочу такие письма</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ДЛЯ ПЕДАГОГОВ: ПОДРОБНО О ВЫГОДАХ -->
+        <section id="teachers" class="section-light">
+            <div class="container">
+                <h2>Для педагогов: новый уровень взаимодействия с детьми и родителями</h2>
+                <div class="hr-line"></div>
+                <p class="lead-text">TAGIR не заменяет вас, а даёт инструмент, который усиливает вашу наблюдательность, экономит время и поднимает статус.</p>
+                <div class="grid-2" style="gap: 50px;">
+                    <div>
+                        <h3>Что меняется в вашей работе</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 24px; padding-left: 28px; position: relative;"><span style="color: var(--gold); font-weight: bold;">🎤</span> <strong>Голос вместо бумаги.</strong> Забудьте про отчёты в Excel или тетради. Просто наговаривайте 1–2 минуты после занятия — ИИ сам превратит речь в структурированные наблюдения.</li>
+                            <li style="margin-bottom: 24px; padding-left: 28px; position: relative;"><span style="color: var(--gold); font-weight: bold;">📈</span> <strong>Рост статуса.</strong> Родители видят вашу глубокую включённость. Они начинают воспринимать вас как настоящего эксперта, который замечает то, что скрыто от поверхностного взгляда.</li>
+                            <li style="margin-bottom: 24px; padding-left: 28px; position: relative;"><span style="color: var(--gold); font-weight: bold;">🤖</span> <strong>ИИ-ассистент.</strong> Система задаёт уточняющие вопросы, помогая вам замечать важные детали. Это похоже на диалог с коллегой, который углубляет ваше понимание ребёнка.</li>
+                            <li style="margin-bottom: 24px; padding-left: 28px; position: relative;"><span style="color: var(--gold); font-weight: bold;">💰</span> <strong>Дополнительный доход.</strong> На основе данных вы можете вести микрогруппы, индивидуальные консультации — родители готовы платить за адресную помощь, потому что видят её эффективность.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Почему это прорыв</h3>
+                        <p>Вы перестаёте быть просто «человеком, который проводит занятие». Вы становитесь архитектором развития. Ваши наблюдения накапливаются в графе мышления, и через год вы видите целостную картину роста каждого ученика. Это делает вашу работу осмысленной и заметной.</p>
+                        <p>Кроме того, вы входите в профессиональное сообщество: круглые столы, разборы кейсов, обмен опытом с коллегами, которые тоже используют TAGIR. Это постоянное развитие и признание.</p>
+                        <p style="margin-top: 20px;"><strong>Станьте тем педагогом, к которому выстраивается очередь.</strong></p>
+                    </div>
+                </div>
+                <div style="margin-top: 40px;">
+                    <a href="#contact" class="btn btn-outline">Узнать о внедрении в вашем центре</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- МЕТОДОЛОГИЧЕСКОЕ ЯДРО (углублённо) -->
+        <section class="section-cream">
+            <div class="container">
+                <h2>Методологическое ядро: от потребителя к создателю</h2>
+                <div class="hr-line"></div>
+                <p class="lead-text">Мы не учим ребёнка потреблять готовые знания. Мы создаём условия, в которых он учится создавать новое. Это отличает TAGIR от любого другого подхода.</p>
+                <div class="grid-2" style="margin-bottom: 40px;">
+                    <div>
+                        <h3>Модель 6 уровней</h3>
+                        <ol style="padding-left: 20px;">
+                            <li><strong>Потребитель</strong> — «дайте мне готовое».</li>
+                            <li><strong>Наблюдатель</strong> — «я вижу, как это работает».</li>
+                            <li><strong>Репродуктор</strong> — «я могу повторить, если покажете».</li>
+                            <li><strong>Адаптер</strong> — «я могу изменить под свою задачу».</li>
+                            <li><strong>Создатель</strong> — «я придумаю своё, используя эти принципы».</li>
+                            <li><strong>Лидер</strong> — «я объясню другому, как это работает».</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <h3>Научная база</h3>
+                        <p>Мы опираемся на работы Выготского (зона ближайшего развития), Дьюи (проектное обучение), Сокова (семантическое мышление) и Сигела (развитие через привязанность). Но в наших отчётах нет сложных терминов — только понятные проявления.</p>
+                    </div>
+                </div>
+                <h3>Семь компетенций (подробно)</h3>
+                <p>Они уже были описаны выше, но здесь мы подчеркнём, как они связаны с переходом от потребителя к создателю.</p>
+                <!-- краткое резюме -->
+                <p style="background: var(--cream); padding: 20px; border-radius: 16px;">Каждая из семи компетенций — это не просто черта характера, а навык, который можно развивать. Системность помогает видеть связи и создавать сложные проекты. Критичность позволяет не довольствоваться первым попавшимся решением. Творчество рождает новые идеи. Управление ИИ даёт доступ к современным инструментам. Коммуникация позволяет работать в команде. Самостоятельность ведёт к инициативе. Вовлечённость даёт энергию доводить дело до конца.</p>
+            </div>
+        </section>
+
+        <!-- АВТОР -->
+        <section class="section-light" id="author">
+            <div class="container">
+                <h2>Автор и команда</h2>
+                <div class="hr-line"></div>
+                <div class="author-block">
+                    <img src="tagir.png" alt="Тагир" class="author-photo">
+                    <div class="author-bio">
+                        <div class="author-name">Тагир Ишкулов</div>
+                        <p class="author-desc">Основатель TAGIR, методолог, педагог. 20 лет искал способ сделать развитие мышления видимым. Этот инструмент — моя методология, упакованная в технологию.</p>
+                        <p>Мы ищем партнёров среди центров и коллег, готовых стать «апостолами» метода. Присоединяйтесь.</p>
+                        <div style="margin-top: 20px;">
+                            <a href="https://t.me/tagir75" style="margin-right: 20px; color: var(--violet);">Telegram</a>
+                            <a href="mailto:tagir75@gmail.com" style="color: var(--violet);">tagir75@gmail.com</a>
+                        </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="pricing-promo fade-in">
-                <div class="pricing-promo-badge">
-                    <span>🎁</span>
-                    <span>Пилот для первых 5 центров — бесплатно на 2 недели</span>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- CTA Final Section -->
-    <section class="cta-final" id="contact">
-        <div class="hero-blob blob-1"></div>
-        <div class="hero-blob blob-2"></div>
-        
-        <div class="cta-content">
-            <h2 class="fade-in">
-                Начните удерживать клиентов<br>
-                <span>уже через неделю</span>
-            </h2>
-            
-            <p class="fade-in">
-                Пилот для первых 5 центров — бесплатно на 2 недели. 
-                Убедитесь в эффективности до оплаты.
-            </p>
-            
-            <div class="fade-in">
-                <a href="https://t.me/TagirFeo" class="btn-primary" target="_blank" style="animation: pulse 3s ease-in-out infinite;">
-                    Записаться на пилот
-                    <span>→</span>
-                </a>
+        <!-- КОНТАКТНАЯ ФОРМА -->
+        <section id="contact" class="section-cream" style="padding: 60px 0;">
+            <div class="container" style="max-width: 600px; text-align: center;">
+                <h2>Давайте обсудим пилот</h2>
+                <p style="margin-bottom: 40px;">Напишите нам, и мы покажем, как система работает на практике, ответим на все вопросы и поможем сделать первый шаг.</p>
+                <form>
+                    <input type="text" placeholder="Ваше имя" style="width: 100%; padding: 16px; border: 1px solid var(--gray-border); border-radius: 40px; margin-bottom: 16px; font-family: inherit;">
+                    <input type="text" placeholder="Telegram или телефон" style="width: 100%; padding: 16px; border: 1px solid var(--gray-border); border-radius: 40px; margin-bottom: 24px; font-family: inherit;">
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Отправить</button>
+                </form>
             </div>
-            
-            <div class="cta-contacts fade-in">
-                <p>Свяжитесь с нами напрямую</p>
-                
-                <div class="contacts-grid">
-                    <a href="https://t.me/TagirFeo" class="contact-item" target="_blank">
-                        <div class="contact-icon">💬</div>
-                        <span>@TagirFeo</span>
-                    </a>
-                    
-                    <a href="mailto:tagir75@gmail.com" class="contact-item">
-                        <div class="contact-icon">✉️</div>
-                        <span>tagir75@gmail.com</span>
-                    </a>
-                    
-                    <a href="tel:+79786508626" class="contact-item">
-                        <div class="contact-icon">📞</div>
-                        <span>+7 (978) 650-86-26</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-grid">
-            <div class="footer-brand">
-                <div class="footer-logo">
-                    <div class="footer-logo-icon">🧠</div>
-                    <span>TAGIR</span>
-                </div>
-                <p>AI-система отчётов для образовательных центров. Удерживайте клиентов через понимание развития детей.</p>
-                <div class="footer-socials">
-                    <a href="https://t.me/TagirFeo" target="_blank">💬</a>
-                    <a href="mailto:tagir75@gmail.com">✉️</a>
-                    <a href="tel:+79786508626">📞</a>
-                </div>
+    <!-- ФУТЕР -->
+    <footer class="footer">
+        <div class="container">
+            <div>
+                <img src="logo.png" alt="TAGIR" style="height: 32px;">
             </div>
-            
-            <div class="footer-column">
-                <h4>Продукт</h4>
-                <ul>
-                    <li><a href="#methodology">О методике</a></li>
-                    <li><a href="#pricing">Тарифы</a></li>
-                    <li><a href="#examples">Примеры</a></li>
-                    <li><a href="#">Блог</a></li>
-                </ul>
+            <div class="footer-links">
+                <a href="#directors">Руководителям</a>
+                <a href="#teachers">Педагогам</a>
+                <a href="#parents">Родителям</a>
             </div>
-            
-            <div class="footer-column">
-                <h4>Компания</h4>
-                <ul>
-                    <li><a href="#">О нас</a></li>
-                    <li><a href="#">Команда</a></li>
-                    <li><a href="#">Карьера</a></li>
-                    <li><a href="#contact">Контакты</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h4>Правовая информация</h4>
-                <ul>
-                    <li><a href="#">Политика конфиденциальности</a></li>
-                    <li><a href="#">Условия использования</a></li>
-                    <li><a href="#">Договор оферты</a></li>
-                </ul>
+            <div class="footer-social">
+                <a href="https://t.me/tagir75">Написать Тагиру</a>
             </div>
         </div>
-        
-        <div class="footer-bottom">
-            <p>© 2025 Мастерская развития мышления TAGIR. Все права защищены.</p>
-            <p>Сделано с заботой о детях и педагогах</p>
+        <div class="container" style="margin-top: 32px; font-size: 0.9rem; color: var(--text-soft); border-top: 1px solid var(--gray-border); padding-top: 20px;">
+            © 2026 TAGIR. Все права защищены.
         </div>
     </footer>
 
-    <!-- Scroll Animation Script -->
     <script>
-        // Fade in animation on scroll
-        const fadeElements = document.querySelectorAll('.fade-in');
-        
-        const fadeInObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        });
-        
-        fadeElements.forEach(el => fadeInObserver.observe(el));
-        
-        // Hero animations on load
-        window.addEventListener('load', () => {
-            const heroElements = document.querySelectorAll('.hero-content > *');
-            heroElements.forEach((el, index) => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(30px)';
-                setTimeout(() => {
-                    el.style.transition = 'all 0.6s ease';
-                    el.style.opacity = '1';
-                    el.style.transform = 'translateY(0)';
-                }, 100 + index * 150);
-            });
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 10) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
         });
     </script>
 </body>
