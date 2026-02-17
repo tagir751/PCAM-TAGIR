@@ -165,8 +165,9 @@
             .nav-menu {
                 display: none;
             }
+            /* убираем центрирование логотипа на мобильных */
             .header .container {
-                justify-content: center;
+                justify-content: flex-start; /* логотип слева */
             }
         }
 
@@ -441,6 +442,25 @@
             }
         }
 
+        /* ===== КНОПКИ НА ПЕРВОМ ЭКРАНЕ (ДЛЯ МОБИЛЬНЫХ) ===== */
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .hero-buttons {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .hero-buttons .btn {
+                width: 100%;
+                text-align: center;
+                margin-right: 0 !important; /* убираем margin-right у первой кнопки */
+            }
+        }
+
         /* ===== ФУТЕР ===== */
         .footer {
             padding: 40px 0;
@@ -493,11 +513,29 @@
             }
         }
 
-        /* дополнительные стили для текста */
         .lead-text {
             font-size: 1.2rem;
             color: var(--text-soft);
             margin-bottom: 2rem;
+        }
+
+        /* кнопка Telegram */
+        .telegram-btn {
+            display: inline-block;
+            background-color: var(--violet);
+            color: white;
+            padding: 16px 40px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: background-color 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .telegram-btn:hover {
+            background-color: var(--violet-deep);
         }
     </style>
 </head>
@@ -521,7 +559,7 @@
                 <div style="max-width: 800px;">
                     <h1 class="fade-up">Увеличьте LTV центра на 40%<br>без новых вложений.</h1>
                     <p class="section-subhead fade-up" style="animation-delay: 0.1s;">TAGIR — инфраструктура наблюдения и развития мышления. Встраивается в любые занятия и превращает живые наблюдения педагогов в прозрачные отчёты для родителей, рост лояльности и новые продукты для вашего центра.</p>
-                    <div class="fade-up" style="animation-delay: 0.2s;">
+                    <div class="hero-buttons fade-up" style="animation-delay: 0.2s;">
                         <a href="#contact" class="btn btn-primary" style="margin-right: 16px;">Хочу пилот</a>
                         <a href="#directors" class="btn btn-outline">Узнать больше</a>
                     </div>
@@ -806,8 +844,8 @@
                     <img src="tagir.png" alt="Тагир" class="author-photo">
                     <div class="author-bio">
                         <div class="author-name">Тагир Ишкулов</div>
-                        <p class="author-desc">Основатель TAGIR, методолог, педагог. 10 лет искал способ сделать развитие мышления видимым. Этот инструмент — моя методология, упакованная в технологию.</p>
-                        <p>Мы ищем партнёров среди центров и коллег, готовых попробовать новое. Присоединяйтесь.</p>
+                        <p class="author-desc">Основатель TAGIR, методолог, педагог. 20 лет искал способ сделать развитие мышления видимым. Этот инструмент — моя методология, упакованная в технологию.</p>
+                        <p>Мы ищем партнёров среди центров и коллег, готовых стать «апостолами» метода. Присоединяйтесь.</p>
                         <div style="margin-top: 20px;">
                             <a href="https://t.me/tagir75" style="margin-right: 20px; color: var(--violet);">Telegram</a>
                             <a href="mailto:tagir75@gmail.com" style="color: var(--violet);">tagir75@gmail.com</a>
@@ -817,16 +855,12 @@
             </div>
         </section>
 
-        <!-- КОНТАКТНАЯ ФОРМА -->
+        <!-- КОНТАКТНАЯ КНОПКА TELEGRAM (вместо формы) -->
         <section id="contact" class="section-cream" style="padding: 60px 0;">
             <div class="container" style="max-width: 600px; text-align: center;">
-                <h2>Давайте обсудим пилот</h2>
-                <p style="margin-bottom: 40px;">Напишите нам, и мы покажем, как система работает на практике, ответим на все вопросы и поможем сделать первый шаг.</p>
-                <form>
-                    <input type="text" placeholder="Ваше имя" style="width: 100%; padding: 16px; border: 1px solid var(--gray-border); border-radius: 40px; margin-bottom: 16px; font-family: inherit;">
-                    <input type="text" placeholder="Telegram или телефон" style="width: 100%; padding: 16px; border: 1px solid var(--gray-border); border-radius: 40px; margin-bottom: 24px; font-family: inherit;">
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Отправить</button>
-                </form>
+                <h2>Обсудим ваш проект?</h2>
+                <p style="margin-bottom: 40px;">Нажмите на кнопку, чтобы написать мне в Telegram. Сообщение уже будет готово — просто отправьте.</p>
+                <a href="https://t.me/tagir75?text=Хочу%20обсудить%20ваш%20проект" class="telegram-btn" target="_blank">Написать в Telegram</a>
             </div>
         </section>
     </main>
