@@ -159,15 +159,12 @@
             color: var(--violet);
         }
 
-        /* убрана кнопка входа */
-
         @media (max-width: 768px) {
             .nav-menu {
                 display: none;
             }
-            /* убираем центрирование логотипа на мобильных */
             .header .container {
-                justify-content: flex-start; /* логотип слева */
+                justify-content: flex-start;
             }
         }
 
@@ -442,7 +439,7 @@
             }
         }
 
-        /* ===== КНОПКИ НА ПЕРВОМ ЭКРАНЕ (ДЛЯ МОБИЛЬНЫХ) ===== */
+        /* ===== КНОПКИ НА ПЕРВОМ ЭКРАНЕ ===== */
         .hero-buttons {
             display: flex;
             gap: 16px;
@@ -457,7 +454,6 @@
             .hero-buttons .btn {
                 width: 100%;
                 text-align: center;
-                margin-right: 0 !important; /* убираем margin-right у первой кнопки */
             }
         }
 
@@ -519,7 +515,6 @@
             margin-bottom: 2rem;
         }
 
-        /* кнопка Telegram */
         .telegram-btn {
             display: inline-block;
             background-color: var(--violet);
@@ -536,6 +531,26 @@
 
         .telegram-btn:hover {
             background-color: var(--violet-deep);
+        }
+
+        /* ===== СТИЛИ ДЛЯ ВИДЕО (АДАПТИВНОСТЬ) ===== */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: #000;
+            border-radius: 20px;
+            margin: 40px 0;
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
         }
     </style>
 </head>
@@ -568,10 +583,16 @@
             </div>
         </section>
 
-        <!-- БЛОК ДЛЯ РУКОВОДИТЕЛЕЙ -->
+        <!-- БЛОК ДЛЯ РУКОВОДИТЕЛЕЙ с видео -->
         <section id="directors" class="section-light">
             <div class="container">
                 <h2>Для руководителей: <br>бизнес, в котором дети не уходят</h2>
+
+                <!-- ВСТАВЛЕНО ВИДЕО ВКОНТАКТЕ (адаптивное) -->
+                <div class="video-wrapper">
+                    <iframe src="https://vk.com/video_ext.php?oid=372915994&id=456239138" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" allowfullscreen></iframe>
+                </div>
+
                 <div class="hr-line"></div>
                 <div class="grid-3" style="margin-bottom: 60px;">
                     <div class="card">
@@ -830,7 +851,6 @@
                 </div>
                 <h3>Семь компетенций (подробно)</h3>
                 <p>Они уже были описаны выше, но здесь мы подчеркнём, как они связаны с переходом от потребителя к создателю.</p>
-                <!-- краткое резюме -->
                 <p style="background: var(--cream); padding: 20px; border-radius: 16px;">Каждая из семи компетенций — это не просто черта характера, а навык, который можно развивать. Системность помогает видеть связи и создавать сложные проекты. Критичность позволяет не довольствоваться первым попавшимся решением. Творчество рождает новые идеи. Управление ИИ даёт доступ к современным инструментам. Коммуникация позволяет работать в команде. Самостоятельность ведёт к инициативе. Вовлечённость даёт энергию доводить дело до конца.</p>
             </div>
         </section>
@@ -855,7 +875,7 @@
             </div>
         </section>
 
-        <!-- КОНТАКТНАЯ КНОПКА TELEGRAM (вместо формы) -->
+        <!-- КОНТАКТНАЯ КНОПКА TELEGRAM -->
         <section id="contact" class="section-cream" style="padding: 60px 0;">
             <div class="container" style="max-width: 600px; text-align: center;">
                 <h2>Обсудим ваш проект?</h2>
